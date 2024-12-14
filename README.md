@@ -1,2 +1,2 @@
 # GestorComercial
-Sistema de un punto de venta
+Sistema de un punto de venta, ok
