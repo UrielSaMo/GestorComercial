@@ -11,6 +11,7 @@ try {
         $password = trim($_POST['pass'] ?? '');
         $idTienda = intval(trim($_POST['idTienda'] ?? ''));
 
+
         if (empty($nombre) || empty($apellidos) || empty($correo) || empty($password) || empty($idTienda)) {
             echo json_encode(['success' => false, 'message' => 'Todos los campos son obligatorios.']);
             exit;

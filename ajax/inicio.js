@@ -1,9 +1,9 @@
-document.querySelector('#registroForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Evita el envío del formulario estándar
+document.querySelector('#loginForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Evita el envío tradicional del formulario
 
     const formData = new FormData(this);
 
-    fetch('/ServicioSocial/GestorComercial/php/registrarse.php', {
+    fetch('/ServicioSocial/GestorComercial/php/InicioSesion.php', {
         method: 'POST',
         body: formData,
     })
@@ -14,9 +14,9 @@ document.querySelector('#registroForm').addEventListener('submit', function (eve
                     icon: 'success',
                     title: '¡Éxito!',
                     text: data.message,
-                    confirmButtonText: 'Ir al inicio de sesión',
+                    confirmButtonText: 'Continuar',
                 }).then(() => {
-                    window.location.href = 'inicioSesion.php';
+                    window.location.href = data.redirectUrl; // Redirige a la URL correspondiente
                 });
             } else {
                 Swal.fire({
@@ -26,7 +26,8 @@ document.querySelector('#registroForm').addEventListener('submit', function (eve
                 });
             }
         })
-        .catch(() => {
+        .catch(error => {
+            console.error('Error en el fetch:', error);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',

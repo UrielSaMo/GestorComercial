@@ -1,7 +1,7 @@
 <?php
 require_once './ConexionBD.php';
 session_start();
-
+header('Content-Type: application/json; charset=utf-8'); // Asegurar que la respuesta sea JSON
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validación de campos
@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rol = intval($_POST['rol_id']);
 
     if (!$correo || empty($contraseña) || !$rol) {
-        header("Location: ../ejemplo.php?error=Por favor completa todos los campos.");
+        echo json_encode(['success' => false, 'message' => 'Todos los campos son obligatorios.']);
         exit;
     }
 
@@ -30,25 +30,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['correo'] = $user['Correo'];
             $_SESSION['role_id'] = $user['rol_id'];
 
-            // Verificación del rol
-            if ($rol === 1 && $user['rol_id'] === 1) {
-                header('Location: ../editarTrabajador.php');
-            } elseif ($rol === 2 && $user['rol_id'] === 2) {
-                header('Location: ./vendedor/dashboard.php');
+            // Verificar el rol y redirigir
+            if ($user['rol_id'] === 1) { // Administrador
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Inicio de sesión como Administrador exitoso.',
+                    'redirectUrl' => '../GestorComercial/editarTrabajador.php'
+                ]);
+            } elseif ($user['rol_id'] === 2) { // Vendedor
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Inicio de sesión como Vendedor exitoso.',
+                    'redirectUrl' => '../GestorComercial/carrito.php'
+                ]);
             } else {
-                header("Location: ../inicioSesion.php?error=Acceso denegado: Rol no autorizado.");
+                echo json_encode(['success' => false, 'message' => 'El rol seleccionado no es válido.']);
             }
-            exit;
         } else {
-            header("Location: ../inicioSesion.php?error=Credenciales incorrectas.");
-            exit;
+            echo json_encode(['success' => false, 'message' => 'Contraseña incorrecta o usuario no encontrado.']);
         }
     } catch (PDOException $e) {
         // Manejo de errores de conexión
-        header("Location: ../inicioSesion.php?error=Error en el sistema. Inténtalo más tarde.");
-        exit;
+        echo json_encode(['success' => false, 'message' => 'Error en la base de datos: ' . $e->getMessage()]);
+    } catch (Exception $e) {
+        // Manejo de errores generales
+        echo json_encode(['success' => false, 'message' => 'Error inesperado: ' . $e->getMessage()]);
     }
 } else {
-    header("Location: ../inicioSesion.php");
-    exit;
+    // Respuesta para solicitudes que no sean POST
+    echo json_encode(['success' => false, 'message' => 'Método no permitido.']);
 }

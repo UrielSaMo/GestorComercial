@@ -4,7 +4,7 @@ class ConexionDB
 {
     private $host = "localhost";
     private $usuario = "root";
-    private $contraseña = "12345678";
+    private $contraseña = "";
     private $baseDatos = "servicio";
 
     public function connect()

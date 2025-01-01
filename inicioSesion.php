@@ -13,7 +13,7 @@
         <h1 class="title">GESTORCOMERCIAL</h1>
         <div class="login-box">
             <img src="icon/icons8-shop-32.png" alt="Tienda" class="icon">
-            <form action="./php/InicioSesion.php" method="POST">
+            <form action="./php/InicioSesion.php" method="post" id="loginForm">
                 <div class="input-group">
                     <label for="email">Correo Electrónico</label>
                     <input type="email" name="correo" id="email" placeholder="Email" required>
@@ -35,5 +35,7 @@
         </div>
     </div>
 
+    <script src="ajax/inicio.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

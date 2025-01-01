@@ -54,7 +54,7 @@
                 </div>
                 <div class="d-flex justify-content-between">
                     <button type="reset" class="btn_color btn btn-secondary">Limpiar</button>
-                    <button type="submit" id="btn_aceptar" class="btn btn_color">Aceptar</button>
+                    <button type="submit" class="btn btn_color">Aceptar</button>
                 </div>
             </form>
         </div>
