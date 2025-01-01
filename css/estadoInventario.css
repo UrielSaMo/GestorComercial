@@ -1,0 +1,156 @@
+/* Contenedor principal */
+.productos-container {
+    width: 65%;
+    margin: 20px auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Permite que los elementos salten de línea en pantallas pequeñas */
+}
+
+.buscar-filtros {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap; /* Ajusta los elementos dentro del grupo de búsqueda */
+}
+
+.buscar-contenedor {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.buscar-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    font-size: 14px;
+    width: 250px;
+    outline: none;
+}
+
+.buscar-btn {
+    padding: 8px;
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.buscar-icono {
+    width: 16px;
+    height: 16px;
+    filter: invert(1); /* Cambia el color de la imagen a blanco */
+}
+.trabajador-card img {
+    width: 40;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.categoria-select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Usuario */
+.usuario {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px; /* Asegura espacio en pantallas pequeñas */
+}
+
+.perfil-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #ccc;
+}
+
+/* Tabla */
+.productos-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+.productos-tabla th {
+    background-color: #4a90e2;
+    color: #fff;
+    padding: 10px;
+}
+
+.productos-tabla td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.productos-tabla tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.estado-activo {
+    color: green;
+    font-weight: bold;
+}
+
+.estado-suspendido {
+    color: red;
+    font-weight: bold;
+}
+
+.editar-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #4a90e2;
+    transition: color 0.3s;
+}
+
+.editar-btn:hover {
+    color: #2c5aa0;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column; /* Cambia la disposición a vertical */
+        align-items: flex-start;
+    }
+
+    .buscar-filtros {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .buscar-input {
+        width: 60%; /* Reduce el tamaño en pantallas más pequeñas */
+    }
+
+    .categoria-select {
+        width: 35%; /* Ajusta el tamaño del selector */
+    }
+
+    .usuario {
+        align-self: flex-end; /* Mueve el usuario a la derecha */
+    }
+}

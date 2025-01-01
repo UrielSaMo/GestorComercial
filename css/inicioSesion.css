@@ -1,0 +1,108 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4fc;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Contenedor principal */
+.container {
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+}
+
+/* Título */
+.title {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #000;
+    letter-spacing: 0.3em;
+}
+
+/* Caja de login */
+.login-box {
+    background-color: #cfe2f3;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Icono */
+.icon {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+/* Campos de entrada */
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    font-size: 0.9em;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input {
+    width: 93%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
+/* Botón */
+.btn {
+    width: 32%;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 1em;
+    color: #000;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #ddd;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .login-box {
+        padding: 15px;
+    }
+
+    .icon {
+        width: 50px;
+    }
+}
+
+@media (max-width: 320px) {
+    .title {
+        font-size: 1.5em;
+    }
+
+    input, .btn {
+        font-size: 0.8em;
+    }
+    .container {
+        text-align: center;
+        width: 100%;
+        max-width: 300px;
+        margin: auto;
+    }
+}
