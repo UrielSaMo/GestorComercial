@@ -9,8 +9,7 @@ try {
         $apellidos = trim($_POST['apellidos'] ?? '');
         $correo = trim($_POST['correo'] ?? '');
         $password = trim($_POST['pass'] ?? '');
-        $idTienda = intval(trim($_POST['idTienda'] ?? ''));
-
+        $idTienda = intval(trim($_POST['claveUnica'] ?? ''));
 
         if (empty($nombre) || empty($apellidos) || empty($correo) || empty($password) || empty($idTienda)) {
             echo json_encode(['success' => false, 'message' => 'Todos los campos son obligatorios.']);
@@ -25,28 +24,38 @@ try {
         $conexionDB = new ConexionDB();
         $conn = $conexionDB->connect();
 
-        $sqlCheck = "SELECT IDUsuario FROM usuario WHERE Correo = :correo";
-        $stmtCheck = $conn->prepare($sqlCheck);
-        $stmtCheck->bindParam(':correo', $correo);
-        $stmtCheck->execute();
-
-        if ($stmtCheck->rowCount() > 0) {
+        // Verificar si el correo ya está registrado
+        $sqlCheckCorreo = "SELECT IDUsuario FROM usuario WHERE Correo = :correo";
+        $stmtCheckCorreo = $conn->prepare($sqlCheckCorreo);
+        $stmtCheckCorreo->bindParam(':correo', $correo);
+        $stmtCheckCorreo->execute();
+        if ($stmtCheckCorreo->rowCount() > 0) {
             echo json_encode(['success' => false, 'message' => 'El correo ya está registrado.']);
+            exit;
+        }
+
+        // Verificar si ClaveUnica existe en tienda
+        $sqlCheckTienda = "SELECT IDTienda FROM tienda WHERE ClaveUnica = :claveUnica";
+        $stmtCheckTienda = $conn->prepare($sqlCheckTienda);
+        $stmtCheckTienda->bindParam(':claveUnica', $idTienda);
+        $stmtCheckTienda->execute();
+        if ($stmtCheckTienda->rowCount() === 0) {
+            echo json_encode(['success' => false, 'message' => 'La ClaveUnica no es válida.']);
             exit;
         }
 
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-        $sql = "INSERT INTO usuario (Nombre, Apellido, Correo, Contraseña, Estado, IDTienda, rol_id) 
-                VALUES (:nombre, :apellidos, :correo, :password, 'Activo', :idTienda, 1)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':nombre', $nombre);
-        $stmt->bindParam(':apellidos', $apellidos);
-        $stmt->bindParam(':correo', $correo);
-        $stmt->bindParam(':password', $hashedPassword);
-        $stmt->bindParam(':idTienda', $idTienda);
+        $sqlInsert = "INSERT INTO usuario (Nombre, Apellido, Correo, Contraseña, Estado, ClaveUnica, rol_id) 
+                      VALUES (:nombre, :apellidos, :correo, :password, 'Activo', :claveUnica, 1)";
+        $stmtInsert = $conn->prepare($sqlInsert);
+        $stmtInsert->bindParam(':nombre', $nombre);
+        $stmtInsert->bindParam(':apellidos', $apellidos);
+        $stmtInsert->bindParam(':correo', $correo);
+        $stmtInsert->bindParam(':password', $hashedPassword);
+        $stmtInsert->bindParam(':claveUnica', $idTienda);
 
-        if ($stmt->execute()) {
+        if ($stmtInsert->execute()) {
             echo json_encode(['success' => true, 'message' => 'Usuario registrado exitosamente.']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Error al registrar el usuario.']);

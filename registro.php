@@ -49,8 +49,8 @@
                     <input type="password" class="form-control" id="password" placeholder="Contraseña" name="pass">
                 </div>
                 <div class="mb-3">
-                    <label for="idtienda" class="form-label">ID de la tienda creada anteriormente</label>
-                    <input type="text" class="form-control" id="idtienda" placeholder="Id de la tienda creada anteriormente" name="idTienda">
+                    <label for="idtienda" class="form-label">Clave de la tienda creada anteriormente</label>
+                    <input type="text" class="form-control" id="idtienda" placeholder="Id de la tienda creada anteriormente" name="claveUnica">
                 </div>
                 <div class="d-flex justify-content-between">
                     <button type="reset" class="btn_color btn btn-secondary">Limpiar</button>
