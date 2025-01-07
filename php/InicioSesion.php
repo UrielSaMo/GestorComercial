@@ -29,13 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_id'] = $user['IDUsuario'];
             $_SESSION['correo'] = $user['Correo'];
             $_SESSION['role_id'] = $user['rol_id'];
+            $_SESSION['tienda_id'] = $user['IDTienda'];
 
             // Verificar el rol y redirigir
             if ($user['rol_id'] === 1) { // Administrador
                 echo json_encode([
                     'success' => true,
                     'message' => 'Inicio de sesión como Administrador exitoso.',
-                    'redirectUrl' => '../GestorComercial/editarTrabajador.php'
+                    'redirectUrl' => '../GestorComercial/trabajador.php'
                 ]);
             } elseif ($user['rol_id'] === 2) { // Vendedor
                 echo json_encode([
