@@ -62,6 +62,12 @@ if ($_SESSION['role_id'] !== 1) {
                         <span class="links_name">Productos</span>
                     </a>
                 </li>
+                <li>
+                    <a href="./php/cerrar_sesion.php">
+                        <img src="icon/icons8-close-26.png" alt="cerrar_icono"> <!-- Ícono de usuario -->
+                        <span class="links_name">Cerrar Sesión</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
