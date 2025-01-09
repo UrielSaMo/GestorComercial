@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 if (!isset($_SESSION['correo'])) {
     header('Location: ./inicioSesion.php');
     exit();
@@ -54,7 +53,7 @@ if ($_SESSION['role_id'] !== 1) {
                 <li>
                     <a href="trabajador.html">
                         <img src="icon/icons8-person-24.png" alt="icono_persona">
-                        <span class="links_name">Vendedores</span>
+                        <span class="links_name">Vendedores</span>         
                     </a>
                 </li>
                 <li>

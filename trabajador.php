@@ -57,7 +57,7 @@
     </div>
     
     <div class="registrar-vendedor-container">
-        <a href="agregarVendedor.html"><button class="registrar-btn">Registrar Nuevo Vendedor</button></a>
+        <a href="agregarVendedor.php"><button class="registrar-btn">Registrar Nuevo Vendedor</button></a>
     </div>
 
     <div class="trabajadores-container">
@@ -66,7 +66,7 @@
             <div class="info">
                 <h3>Alberto</h3>
                 <p>Giménez Alvarez</p>
-                <a href="editarTrabajador.html"><button class="editar-btn">Editar Trabajador</button></a>
+                <a href="editarTrabajador.php"><button class="editar-btn">Editar Trabajador</button></a>
                 
             </div>
         </div>

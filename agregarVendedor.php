@@ -1,3 +1,15 @@
+<?php
+session_start();
+if (!isset($_SESSION['correo'])) {
+    header('Location: ./inicioSesion.php');
+    exit();
+}
+if ($_SESSION['role_id'] !== 1) {
+    echo "<script>
+     alert('Acceso Denegado. Solo administradores pueden acceder');";
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,7 +69,7 @@
     <div class="contenido-gris">
         <div class="formulario-container">
             <h2>Agregar vendedor</h2>
-            <form action="#" method="post" enctype="multipart/form-data">
+            <form action="./php/agregarVendedor.php" method="post" id="agregarVendedor" enctype="multipart/form-data" >
                 <div>
                     <label>Nombre</label>
                     <input type="text" id="nombre" name="nombre" required>
@@ -67,8 +79,12 @@
                     <input type="text" id="apellidos" name="apellidos" required>
                 </div>
                 <div>
-                    <label>Edad</label>
-                    <input type="number" id="edad" name="edad" required>
+                    <label>Correo</label>
+                    <input type="text" id="correo" name="correo" required>
+                </div>
+                <div>
+                    <label>Contraseña</label>
+                    <input type="password" id="password" name="password" required>
                 </div>
                 <div>
                     <label>Foto del trabajador</label>
@@ -76,15 +92,16 @@
                 </div>
                 <div class="buttons">
                     <button type="reset" class="limpiar-btn">Limpiar</button>
-                    <button type="submit" class="agregar-btn">Agregar</button>
+                    <button type="submit" class="agregar-btn">Registrar</button>
+                    
                 </div>
             </form>
         </div>
     </div>
     
-    
-    <script src="js/script.js">
-    </script>
+    <script src="ajax/agregarVendedor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/script.js"></script>
     
 </body>
 </html>
