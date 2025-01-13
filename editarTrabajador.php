@@ -9,6 +9,23 @@ if ($_SESSION['role_id'] !== 1) {
      alert('Acceso Denegado. Solo administradores pueden acceder');";
     exit();
 }
+
+require_once 'php/ConexionBD.php';
+
+$connection = new ConexionDB();
+$pdo = $connection->connect();
+
+$idUsuario = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : 'ID no disponible';
+
+$stmt = $pdo->prepare('SELECT Estado, Nombre, Apellido, Correo, Foto FROM usuario WHERE rol_id = 2 AND IDUsuario = :idUsuario');
+$stmt->bindParam(':idUsuario', $idUsuario, PDO::PARAM_INT);
+$stmt->execute();
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+// Convierte el BLOB a Base64 para mostrar la imagen
+$fotoBase64 = base64_encode($user['Foto']);
+$fotoSrc = is_null($user['Foto']) ? 'icon/perfil.png' : 'data:image/jpeg;base64,' . base64_encode($user['Foto']);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -27,23 +44,16 @@ if ($_SESSION['role_id'] !== 1) {
     <nav style="background-color: #e7e7fb;" class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <img src="icon/icons8-shop-32.png" alt="Logo" class="rounded me-2" ><span style="color: black;">
-                    GestorComercial
-                </span>
+                <img src="icon/icons8-shop-32.png" alt="Logo" class="rounded me-2" >
+                <span style="color: black;">GestorComercial</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse">
-               
-            </div>
         </div>
     </nav>
 
     <div class="sidebar">
         <div class="logo_content">
             <div class="menu_btn">
-              <img src="icon/icons8-menu-30.png" alt=""><!-- Ícono de menú -->
+              <img src="icon/icons8-menu-30.png" alt="">
             </div>
             <div class="logo">
                 <img src="icon/icons8-shop-32.png">
@@ -51,13 +61,13 @@ if ($_SESSION['role_id'] !== 1) {
             </div>
             <ul class="nav_list">
                 <li>
-                    <a href="trabajador.html">
+                    <a href="trabajador.php">
                         <img src="icon/icons8-person-24.png" alt="icono_persona">
-                        <span class="links_name">Vendedores</span>         
+                        <span class="links_name">Vendedores</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#Productos">
+                    <a href="listaProductos.html">
                         <img src="icon/icons8-product-24.png" alt="icono_producto"> <!-- Ícono de usuario -->
                         <span class="links_name">Productos</span>
                     </a>
@@ -71,45 +81,60 @@ if ($_SESSION['role_id'] !== 1) {
             </ul>
         </div>
     </div>
-    <script src="js/script.js">
-    </script>
-    
 
-
-
-    <!-- Formulario -->
-     
     <div class="d-flex flex-column align-items-center justify-content-center vh-100">
         <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
             <div class="d-flex align-items-center mb-4">
-                <img src="img/pexels-danxavier-1212984.jpg" alt="Foto del Trabajador" class="rounded-circle me-3" style="width: 110px; height: 110px; object-fit: cover;">
+                <img src="<?= $fotoSrc ?>" alt="Foto del Trabajador" class="rounded-circle me-3" style="width: 110px; height: 110px; object-fit: cover;">
                 <div>
-                    <h5 class="mb-1">Alberto <span class="text-secondary">26 años</span></h5>
-                    <p class="mb-0 text-muted">Giménez Alvarez</p>
+                    <h5 class="mb-1"><?= htmlspecialchars($user['Nombre']) ?></h5>
+                    <p class="mb-0 text-muted"><?= htmlspecialchars($user['Apellido']) ?></p>
+                    <p class="mb-0 text-muted">Estado: <?= htmlspecialchars($user['Estado']) ?></p>
                 </div>
             </div>
-            <form>
+            <form action="./php/actualizarVendedor.php" method="post" id="actualizarVendedor" enctype="multipart/form-data" >
                 <div class="mb-3">
-                    <label for="nombre" class="form-label">Estado de Trabajador</label>
-                    <select name="estado" id="estado_trabajador" class="form-select">
-                        <option value="" disabled selected>Seleccione una opcion</option>
-                        <option value="activo">Activo</option>
-                        <option value="suspendido">Suspendido</option>
+
+                    <input type="hidden" name="user_id" value="<?= isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '' ?>">
+
+                    <label for="estado_trabajador" class="form-label">Estado de Trabajador</label>
+                    <select name="estado" id="estado_trabajador" class="form-select" require>
+                        <option value="" disabled selected>Seleccione un estado</option>
+                        <option value="activo" <?= isset($user['Estado']) && $user['Estado'] == 'activo' ? 'selected' : '' ?>>Activo</option>
+                        <option value="inactivo" <?= isset($user['Estado']) && $user['Estado'] == 'inactivo' ? 'selected' : '' ?>>Inactivo</option>
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="trabajadores" class="form-label">Edad de trabajador</label>
-                    <input type="number" class="form-control" id="trabajadores" placeholder="Edad">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="<?= htmlspecialchars($user['Nombre']) ?>" require>
+                </div>
+                <div class="mb-3">
+                    <label for="apellidos" class="form-label">Apellidos</label>
+                    <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos" value="<?= htmlspecialchars($user['Apellido']) ?>" require>
+                </div>
+                <div class="mb-3">
+                    <label for="correo" class="form-label">Correo</label>
+                    <input type="email" class="form-control" id="correo" name="correo" placeholder="Correo" value="<?= htmlspecialchars($user['Correo']) ?>" require>
+                </div>
+                <div class="mb-3">
+                    <label for="contraseña" class="form-label">Cambiar contraseña</label>
+                    <input type="text" class="form-control" id="contraseña" name="password" placeholder="Por seguridad no se muestra la contraseña">
+                </div>
+                <div class="mb-3">
+                    <label for="contraseña" class="form-label">Cambiar foto</label>
+                    <input type="file" class="form-control" id="contraseña" name="foto">
                 </div>
                 <div class="d-flex justify-content-between">
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
-                    <button type="submit" class="btn btn_color">Aceptar</button>
+                    <button type="reset" class="btn btn-danger">Limpiar</button>
+                    <button type="submit" class="btn btn_color">Enviar cambios</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
+    <script src="js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="ajax/actualizarVendedor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
