@@ -28,7 +28,7 @@ try {
             exit;
         }
 
-        $fotoContenido = null; // Valor predeterminado
+        $fotoContenido = null;
 
         if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
             $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
@@ -54,6 +54,21 @@ try {
 
         // Verificar si el nuevo correo es diferente al actual
         $updateCorreo = ($correo !== $currentEmail);
+
+        // Si el correo es diferente, verificar si ya existe en la base de datos
+        if ($updateCorreo) {
+            $sqlCheckEmail = "SELECT COUNT(*) FROM usuario WHERE Correo = :correo AND IDUsuario != :userId";
+            $stmtCheckEmail = $pdo->prepare($sqlCheckEmail);
+            $stmtCheckEmail->bindParam(':correo', $correo);
+            $stmtCheckEmail->bindParam(':userId', $userId);
+            $stmtCheckEmail->execute();
+            $emailExists = $stmtCheckEmail->fetchColumn();
+
+            if ($emailExists > 0) {
+                echo json_encode(['success' => false, 'message' => 'El correo electrónico ya está registrado por otro usuario.']);
+                exit;
+            }
+        }
 
         // Iniciar la consulta base
         $sqlActualizar = "UPDATE usuario SET Nombre = :nombre, Apellido = :apellidos";
