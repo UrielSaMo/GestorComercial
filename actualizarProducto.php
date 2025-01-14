@@ -61,8 +61,11 @@ $estado = isset($_GET['estado']) ? htmlspecialchars($_GET['estado']) : '';
             <a class="navbar-brand" href="#"></a>
             <div class="navbar-menu">
                 <a class="nav-item" href="#">
+                    <?php
+                    echo "<span class='user-text'>" . htmlspecialchars($_SESSION['correo']) . "</span>"; // Aqui para Mostrar IDUsuario
+                    ?>
                     <img src="img/pexels-danxavier-1212984.jpg" alt="User" class="user-image">
-                    <span class="user-text">Vendedor</span>
+
                 </a>
             </div>
         </div>
@@ -79,15 +82,21 @@ $estado = isset($_GET['estado']) ? htmlspecialchars($_GET['estado']) : '';
             </div>
             <ul class="nav_list">
                 <li>
-                    <a href="carrito.html">
+                    <a href="carrito.php">
                         <img src="icon/icons8-person-24.png" alt="icono_persona">
                         <span class="links_name">Venta</span>
                     </a>
                 </li>
                 <li>
-                    <a href="estadoInventario.html">
+                    <a href="estadoInventario.php">
                         <img src="icon/icons8-product-24.png" alt="icono_producto"> <!-- Ícono de usuario -->
                         <span class="links_name">Estado de inventario</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="php/cerrar_sesion.php">
+                        <img src="icon/icons8-close-26.png" alt="icono_producto"> <!-- Ícono de usuario -->
+                        <span class="links_name">Cerrar Sesión</span>
                     </a>
                 </li>
             </ul>
@@ -101,7 +110,7 @@ $estado = isset($_GET['estado']) ? htmlspecialchars($_GET['estado']) : '';
                 <input type="hidden" name="id" value="<?php echo $id; ?>">
                 <div class="mb-3">
                     <label for="nombre" class="form-label">Nombre de producto</label>
-                    <input type="text" class="form-control" id="nombre" name="nombre"  value="<?php echo $nombre; ?>" required>
+                    <input type="text" class="form-control" id="nombre" name="nombre" value="<?php echo $nombre; ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="precio" class="form-label">Precio de producto</label>
@@ -109,7 +118,7 @@ $estado = isset($_GET['estado']) ? htmlspecialchars($_GET['estado']) : '';
                 </div>
                 <div class="mb-3">
                     <label for="categoria" class="form-label">Categoria</label>
-                    <input type="text" class="form-control" id="categoria" name="categoria"  value="<?php echo $categoria; ?>" required>
+                    <input type="text" class="form-control" id="categoria" name="categoria" value="<?php echo $categoria; ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="stock" class="form-label">Stock del producto</label>
@@ -119,8 +128,7 @@ $estado = isset($_GET['estado']) ? htmlspecialchars($_GET['estado']) : '';
                     <label for="estado" class="form-label">Estado</label>
                     <input type="text" class="form-control" id="estado" name="estado" value="<?php echo $estado; ?>" required>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <button type="reset" class="btn btn-secondary">Limpiar</button>
+                <div class="d-flex">
                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
             </form>
