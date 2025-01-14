@@ -4,7 +4,7 @@ if (!isset($_SESSION['correo'])) {
     header('Location: ./inicioSesion.php');
     exit();
 }
-if ($_SESSION['role_id'] !== 1) {
+if ($_SESSION['rol_id'] !== 1) {
     echo "<script>
      alert('Acceso Denegado. Solo administradores pueden acceder');";
     exit();
@@ -12,6 +12,7 @@ if ($_SESSION['role_id'] !== 1) {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,30 +21,25 @@ if ($_SESSION['role_id'] !== 1) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/navbar.css">
 </head>
+
 <body class="bg-light">
 
     <!-- Navbar -->
-    <nav style="background-color: #e7e7fb;" class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="icon/icons8-shop-32.png" alt="Logo" class="rounded me-2" ><span style="color: black;">
-                    GestorComercial
-                </span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse">
-               
-            </div>
+    <nav class="custom-navbar">
+        <div class="navbar-container">
+            <span class="navbar-text mx-auto fw-bold fs-4">
+                <img src="icon/icons8-shop-32.png" alt="User" class="user-image">
+                <a href="carrito.php" class="text-decoration-none text-dark">GestorComercial</a>
+            </span>
         </div>
     </nav>
 
     <div class="sidebar">
         <div class="logo_content">
             <div class="menu_btn">
-              <img src="icon/icons8-menu-30.png" alt=""><!-- Ícono de menú -->
+                <img src="icon/icons8-menu-30.png" alt=""><!-- Ícono de menú -->
             </div>
             <div class="logo">
                 <img src="icon/icons8-shop-32.png">
@@ -53,11 +49,11 @@ if ($_SESSION['role_id'] !== 1) {
                 <li>
                     <a href="trabajador.html">
                         <img src="icon/icons8-person-24.png" alt="icono_persona">
-                        <span class="links_name">Vendedores</span>         
+                        <span class="links_name">Vendedores</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#Productos">
+                    <a href="listaProductos.html">
                         <img src="icon/icons8-product-24.png" alt="icono_producto"> <!-- Ícono de usuario -->
                         <span class="links_name">Productos</span>
                     </a>
@@ -73,12 +69,12 @@ if ($_SESSION['role_id'] !== 1) {
     </div>
     <script src="js/script.js">
     </script>
-    
+
 
 
 
     <!-- Formulario -->
-     
+
     <div class="d-flex flex-column align-items-center justify-content-center vh-100">
         <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
             <div class="d-flex align-items-center mb-4">
@@ -112,4 +108,5 @@ if ($_SESSION['role_id'] !== 1) {
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

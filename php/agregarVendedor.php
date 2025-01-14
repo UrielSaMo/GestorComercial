@@ -1,5 +1,14 @@
 <?php
-require_once './ConexionBD.php';
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Habilitar el registro de errores en un archivo para seguimiento
+ini_set('log_errors', 1);
+ini_set('error_log', 'error_log.txt');  // Especifica la ruta del archivo de log
+
+
+include './ConexionBD.php';
 session_start();
 header('Content-Type: application/json; charset=utf-8');
 

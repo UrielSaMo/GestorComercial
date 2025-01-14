@@ -3,7 +3,7 @@ document.querySelector('#registroForm').addEventListener('submit', function (eve
 
     const formData = new FormData(this);
 
-    fetch('/ServicioSocial/GestorComercial/php/RegistroTienda.php', {
+    fetch('/ServicioSocial/GestorComercial/php/register.php', {
         method: 'POST',
         body: formData,
     })
@@ -11,19 +11,12 @@ document.querySelector('#registroForm').addEventListener('submit', function (eve
         .then(data => {
             if (data.success) {
                 Swal.fire({
-                    icon: 'info',
-                    title: 'Nota Importante',
-                    text: 'Por favor, asegúrate de conservar la Clave Única proporcionada en el siguiente mensaje. Será necesaria para futuras referencias.',
-                    confirmButtonText: 'Entendido',
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: data.message,
+                    confirmButtonText: 'Ir al inicio de sesión',
                 }).then(() => {
-                    Swal.fire({
-                        icon: 'success',
-                        title: '¡Éxito!',
-                        html: data.message,  // Usa 'html' en lugar de 'text' para mostrar formato HTML
-                        confirmButtonText: 'Registrar Administrador',
-                    }).then(() => {
-                        window.location.href = 'registro.php';
-                    });
+                    window.location.href = 'inicioSesion.php';
                 });
             } else {
                 Swal.fire({

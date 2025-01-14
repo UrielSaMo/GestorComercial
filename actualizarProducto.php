@@ -1,3 +1,44 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['correo']) || $_SESSION['rol_id']  != 2) {
+    header('Location: ./inicioSesion.php');
+    exit();
+}
+require_once './php/ConexionBD.php';
+$connection = new ConexionDB();
+$pdo = $connection->connect();
+
+$sql = 'SELECT IDUsuario FROM usuario WHERE Correo = :correo';
+$stmt = $pdo->prepare($sql);
+$stmt->bindParam(':correo', $_SESSION['correo'], PDO::PARAM_STR);
+$stmt->execute();
+
+// Obtener el IDUsuario
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+$idUsuario = $user ? $user['IDUsuario'] : null;
+
+
+$sqltienda = 'SELECT IDTienda FROM usuario WHERE Correo = :correo';
+$stmtienda = $pdo->prepare($sqltienda);
+$stmtienda->bindParam(':correo', $_SESSION['correo'], PDO::PARAM_STR);
+$stmtienda->execute();
+
+//Obtener tienda 
+$user1 = $stmtienda->fetch(PDO::FETCH_ASSOC);
+$idtienda = $user1 ? $user1['IDTienda'] : null;
+
+
+// Capturar los valores desde la URL
+$id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
+$nombre = isset($_GET['nombre']) ? htmlspecialchars($_GET['nombre']) : '';
+$precio = isset($_GET['precio']) ? htmlspecialchars($_GET['precio']) : '';
+$categoria = isset($_GET['categoria']) ? htmlspecialchars($_GET['categoria']) : '';
+$stock = isset($_GET['stock']) ? htmlspecialchars($_GET['stock']) : '';
+$estado = isset($_GET['estado']) ? htmlspecialchars($_GET['estado']) : '';
+
+
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -14,7 +55,7 @@
 
 <body class="bg-light">
 
-    
+
     <nav class="custom-navbar">
         <div class="navbar-container">
             <a class="navbar-brand" href="#"></a>
@@ -56,38 +97,40 @@
     <div class="d-flex flex-column align-items-center justify-content-center vh-100">
         <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
             <h2 class="text-center">Actualizar Producto</h2>
-            <form>
+            <form action="php/procesarActualizacion.php" method="POST">
+                <input type="hidden" name="id" value="<?php echo $id; ?>">
                 <div class="mb-3">
                     <label for="nombre" class="form-label">Nombre de producto</label>
-                    <input type="text" class="form-control" id="nombre" name="name_producto"
-                        placeholder="Nombre completo">
+                    <input type="text" class="form-control" id="nombre" name="nombre"  value="<?php echo $nombre; ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="precio" class="form-label">Precio de producto</label>
-                    <input type="number" class="form-control" id="precio" name="precio" placeholder="Precio">
+                    <input type="number" class="form-control" id="precio" name="precio" value="<?php echo $precio; ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="categoria" class="form-label">Categoria</label>
-                    <input type="text" class="form-control" id="categoria" name="categoria" placeholder="Categoria">
+                    <input type="text" class="form-control" id="categoria" name="categoria"  value="<?php echo $categoria; ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="stock" class="form-label">Stock del producto</label>
-                    <input type="number" class="form-control" id="stock" name="stock" placeholder="Stock">
+                    <input type="number" class="form-control" id="stock" name="stock" value="<?php echo $stock; ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="estado" class="form-label">Estado</label>
-                    <input type="text" class="form-control" id="estado" name="estado" placeholder="Estado">
+                    <input type="text" class="form-control" id="estado" name="estado" value="<?php echo $estado; ?>" required>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <button type="reset" class="btn_color btn btn-secondary">Limpiar</button>
-                    <button type="submit" class="btn btn_color">Aceptar</button>
+                    <button type="reset" class="btn btn-secondary">Limpiar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script src="js/script.js"></script>
+    <script src="ajax/ActualizacionCompleta.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

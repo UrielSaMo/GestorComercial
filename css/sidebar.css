@@ -1,52 +1,39 @@
-*{
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-}
-body{
-    position: relative;
+body {
+    display: flex; /* Configurar un diseño flex para la barra lateral y el contenido */
     min-height: 100vh;
-    width: 100%;
+    margin: 0;
+}
 
-}
-a{
-    padding: 0px;
-    margin: 0px;
-}
-.sidebar{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 50px;
+.sidebar {
+    position: relative; /* Cambiar de fixed a relative para trabajar con flexbox */
+    width: 50px; /* Ancho inicial del sidebar */
     background-color: #ffffff;
-    padding: 6 16px;
-    height: 100%;
+    height: 100vh;
     box-shadow: 5px 0 30px rgba(0, 0, 0, .1);
-    transition: all .5s ease;
+    transition: width .5s ease; /* Transición suave al expandirse */
 }
-.sidebar.active{
-    width: 240px;
+
+.sidebar.active {
+    width: 240px; /* Ancho del sidebar expandido */
 }
-.sidebar .logo_content .logo{
+
+.sidebar .logo_content .logo {
     display: flex;
+    align-items: center;
     color: #0b2997;
     height: 50px;
     width: 100%;
     font-size: 30px;
     margin-left: 5px;
-    align-items: center;
-    pointer-events: none;
     opacity: 0;
-    transition: 1.5 ease;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
 }
-.sidebar.sidebar.active .logo_content .logo{
+
+.sidebar.active .logo_content .logo {
     opacity: 1;
 }
-.sidebar .logo_content .logo .logo_name{
-    font-size: 23px;
-    font-weight: 600;
-    margin: 0 10px;
-}
+
 .sidebar .menu_btn {
     position: absolute;
     top: 10px;
@@ -59,10 +46,6 @@ a{
     justify-content: center;
 }
 
-.sidebar.active .menu_btn {
-    left: 220px; /* Ajusta la posición cuando la barra lateral está expandida */
-    transition: all 0.5s ease;
-}
 .sidebar .nav_list {
     margin-top: 20px;
     list-style: none;
@@ -70,7 +53,6 @@ a{
 }
 
 .sidebar .nav_list li {
-    position: relative;
     list-style: none;
     height: 50px;
     line-height: 50px;
@@ -94,12 +76,6 @@ a{
     color: #0b2997;
 }
 
-.sidebar .nav_list li a i {
-    min-width: 30px;
-    font-size: 20px;
-    text-align: center;
-}
-
 .sidebar .nav_list li a .links_name {
     opacity: 0;
     transition: opacity 0.4s ease;
@@ -109,6 +85,15 @@ a{
     opacity: 1;
     margin-left: 10px;
 }
-.sidebar.active .menu_btn {
-    display: none;
+
+/* Contenido principal */
+.content {
+    flex: 1; /* Hacer que el contenido ocupe el resto del espacio disponible */
+    padding: 20px;
+    margin-left: 50px; /* Igual al ancho inicial del sidebar */
+    transition: margin-left 0.5s ease; /* Suave desplazamiento al expandir/cerrar el sidebar */
+}
+
+.sidebar.active ~ .content {
+    margin-left: 240px; /* Igual al ancho expandido del sidebar */
 }

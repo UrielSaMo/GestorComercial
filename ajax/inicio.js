@@ -7,7 +7,12 @@ document.querySelector('#loginForm').addEventListener('submit', function (event)
         method: 'POST',
         body: formData,
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error de red o servidor.');
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
                 Swal.fire({
@@ -27,11 +32,11 @@ document.querySelector('#loginForm').addEventListener('submit', function (event)
             }
         })
         .catch(error => {
-            console.error('Error en el fetch:', error);
+            console.error('Error en el fetch:', error.message); // Muestra solo el mensaje del error
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'No se pudo completar la solicitud. Inténtalo más tarde.',
+                text: error.message || 'No se pudo completar la solicitud. Inténtalo más tarde.',
             });
         });
 });

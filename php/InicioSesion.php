@@ -1,5 +1,15 @@
 <?php
-require_once './ConexionBD.php';
+
+// Habilitar la visualización de todos los errores
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Habilitar el registro de errores en un archivo para seguimiento
+ini_set('log_errors', 1);
+ini_set('error_log', 'error_log.txt');  // Especifica la ruta del archivo de log
+
+
+include './ConexionBD.php';
 session_start();
 header('Content-Type: application/json; charset=utf-8'); // Asegurar que la respuesta sea JSON
 
@@ -24,28 +34,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([':correo' => $correo]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        // Verificar si el usuario existe y la contraseña es correcta
         if ($user && password_verify($contraseña, $user['Contraseña'])) {
-            // Iniciar sesión
-            $_SESSION['user_id'] = $user['IDUsuario'];
-            $_SESSION['correo'] = $user['Correo'];
-            $_SESSION['role_id'] = $user['rol_id'];
-            $_SESSION['tienda_id'] = $user['IDTienda'];
-
-            // Verificar el rol y redirigir
-            if ($user['rol_id'] === 1) { // Administrador
-                echo json_encode([
-                    'success' => true,
-                    'message' => 'Inicio de sesión como Administrador exitoso.',
-                    'redirectUrl' => '../GestorComercial/trabajador.php'
-                ]);
-            } elseif ($user['rol_id'] === 2) { // Vendedor
-                echo json_encode([
-                    'success' => true,
-                    'message' => 'Inicio de sesión como Vendedor exitoso.',
-                    'redirectUrl' => '../GestorComercial/carrito.php'
-                ]);
+            // Comparar el rol proporcionado con el rol almacenado
+            if ($user['rol_id'] == $rol) {
+                // Iniciar sesión
+                $_SESSION['user_id'] = $user['IDUsuario'];
+                $_SESSION['correo'] = $user['Correo'];
+                $_SESSION['rol_id'] = $user['rol_id'];
+                $_SESSION['tienda_id'] = $user['IDTienda'];
+                
+                // Verificar el rol y redirigir
+                if ($rol === 1) { // Administrador
+                    echo json_encode([
+                        'success' => true,
+                        'message' => 'Inicio de sesión como Administrador exitoso.',
+                        'redirectUrl' => '../GestorComercial/editarTrabajador.php'
+                    ]);
+                } elseif ($rol === 2) { // Vendedor
+                    echo json_encode([
+                        'success' => true,
+                        'message' => 'Inicio de sesión como Vendedor exitoso.',
+                        'redirectUrl' => '../GestorComercial/carrito.php'
+                    ]);
+                }
             } else {
-                echo json_encode(['success' => false, 'message' => 'El rol seleccionado no es válido.']);
+                echo json_encode(['success' => false, 'message' => 'El rol seleccionado no coincide con el registrado.']);
             }
         } else {
             echo json_encode(['success' => false, 'message' => 'Contraseña incorrecta o usuario no encontrado.']);
@@ -58,6 +72,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['success' => false, 'message' => 'Error inesperado: ' . $e->getMessage()]);
     }
 } else {
-    // Respuesta para solicitudes que no sean POST
     echo json_encode(['success' => false, 'message' => 'Método no permitido.']);
 }
