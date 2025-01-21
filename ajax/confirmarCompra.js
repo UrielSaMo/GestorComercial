@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.total span').textContent = `$${total.toFixed(2)}`;
 
         document.getElementById('productosInput').value = JSON.stringify(productos);
+        document.getElementById('subtotal').value = subtotal.toFixed(2);
         document.getElementById('total').value = total.toFixed(2);
     }
 
@@ -31,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault(); // Evitar que el formulario se envíe de forma tradicional
 
         const productos = JSON.parse(document.getElementById('productosInput').value || '[]');
+        const subtotal = document.getElementById('subtotal').value;
         const total = document.getElementById('total').value;
         const idUsuario = document.getElementById('idUsuario').value;
         const idTienda = document.getElementById('idTienda').value;
@@ -51,17 +53,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        fetch('php/compra.php', {
+        const formData = new FormData();
+        formData.append('productos', JSON.stringify(productos));
+        formData.append('idUsuario', idUsuario);
+        formData.append('idTienda', idTienda);
+        formData.append('subtotal', subtotal);
+        formData.append('total', total);
+
+        fetch('/ServicioSocial/GestorComercial/php/compra.php', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({
-                productos: JSON.stringify(productos),
-                idUsuario,
-                idTienda,
-                total,
-            }),
+            body: formData
         })
         .then(response => response.json())
         .then(data => {

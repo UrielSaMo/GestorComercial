@@ -8,12 +8,17 @@
 
 /* Estilo del navbar */
 .custom-navbar {
+    position: fixed; /* Fija el navbar en la parte superior */
+    top: 0;
+    left: 0;
+    width: 100%; /* Abarca todo el ancho */
     background-color: #e7e7fb;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     padding: 10px 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Por encima de otros elementos */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centra horizontalmente el contenido del navbar */
 }
 
 .navbar-container {

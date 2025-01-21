@@ -12,7 +12,6 @@
 </head>
 
 <body class="bg-light">
-
     <!-- Navbar -->
     <nav style="background-color: #e7e7fb;" class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
@@ -22,20 +21,16 @@
                     Registrar tu tienda
                 </span>
             </a>
-            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse">
-
-            </div>
+            <div class="collapse navbar-collapse"></div>
         </div>
     </nav>
-
     <!-- Formulario -->
     <div class="d-flex flex-column align-items-center justify-content-center vh-100">
         <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
-            <form action="./php/register.php" method="post" id="registroForm">
+            <form id="registroForm">
                 <div class="mb-3">
                     <label for="tienda" class="form-label">Nombre de la tienda</label>
                     <input type="text" class="form-control" id="tienda" placeholder="Nombre de la tienda" name="tienda">
@@ -53,7 +48,7 @@
                     <input type="number" class="form-control" id="trabajadores" placeholder="Cantidad de trabajadores" name="trabajadores">
                 </div>
                 <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre de Administrador</label>
+                    <label for="nombre" class="form-label">Nombre de Administrador</label>
                     <input type="text" class="form-control" id="nombre" placeholder="Nombre completo" name="nombre">
                 </div>
                 <div class="mb-3">
@@ -68,10 +63,7 @@
                     <label for="Password" class="form-label">Contraseña</label>
                     <input type="password" class="form-control" id="password" placeholder="Contraseña" name="pass">
                 </div>
-
-
-
-
+                <input type="hidden" name="action" value="register">
                 <div class="d-flex justify-content-between">
                     <button type="reset" class="btn_color btn btn-secondary">Limpiar</button>
                     <button type="submit" class="btn btn_color">Aceptar</button>
@@ -79,7 +71,6 @@
             </form>
         </div>
     </div>
-
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="ajax/registroTodo.js"></script>

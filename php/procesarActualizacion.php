@@ -1,5 +1,5 @@
 <?php
-require_once './ConexionBD.php';
+require_once './Producto.php';
 session_start();
 header('Content-Type: application/json');
 
@@ -11,22 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stock = $_POST['stock'];
     $estado = $_POST['estado'];
 
-    $connection = new ConexionDB();
-    $pdo = $connection->connect();
+    $producto = new Producto();
+    $resultado = $producto->actualizarProducto($id, $nombre, $precio, $categoria, $stock, $estado);
 
-    try {
-        $sql = "UPDATE productos SET Nombre = :nombre, Precio = :precio, Categoria = :categoria, Stock = :stock, Estado = :estado WHERE IDProducto = :id";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':nombre', $nombre);
-        $stmt->bindParam(':precio', $precio);
-        $stmt->bindParam(':categoria', $categoria);
-        $stmt->bindParam(':stock', $stock);
-        $stmt->bindParam(':estado', $estado);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-
-        echo json_encode(['success' => true, 'message' => 'El producto se actualizó correctamente.']);
-    } catch (Exception $e) {
-        echo json_encode(['success' => false, 'message' => 'Error al actualizar el producto: ' . $e->getMessage()]);
-    }
+    echo json_encode($resultado);
 }
+?>

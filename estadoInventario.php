@@ -1,33 +1,14 @@
 <?php
-session_start();
 
-if (!isset($_SESSION['correo']) || $_SESSION['rol_id']  != 2) {
-    header('Location: ./inicioSesion.php');
-    exit();
-}
-require_once './php/ConexionBD.php';
-$connection = new ConexionDB();
-$pdo = $connection->connect();
+require_once './php/Usuario.php';
 
-$sql = 'SELECT IDUsuario FROM usuario WHERE Correo = :correo';
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':correo', $_SESSION['correo'], PDO::PARAM_STR);
-$stmt->execute();
+$usuario = new Usuario();
+$usuario->verificarSesion($_SESSION['correo'], 2);
 
-// Obtener el IDUsuario
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
-$idUsuario = $user ? $user['IDUsuario'] : null;
-
-
-$sqltienda = 'SELECT IDTienda FROM usuario WHERE Correo = :correo';
-$stmtienda = $pdo->prepare($sqltienda);
-$stmtienda->bindParam(':correo', $_SESSION['correo'], PDO::PARAM_STR);
-$stmtienda->execute();
-
-//Obtener tienda 
-$user1 = $stmtienda->fetch(PDO::FETCH_ASSOC);
-$idtienda = $user1 ? $user1['IDTienda'] : null;
-
+$datosUsuario = $usuario->obtenerDatosPorCorreo($_SESSION['correo']);
+$idUsuario = $datosUsuario['IDUsuario'] ?? null;
+$idTienda = $datosUsuario['IDTienda'] ?? null;
+$fotoBase64 = $usuario->obtenerFotoBase64($datosUsuario['Foto'] ?? null);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -86,7 +67,7 @@ $idtienda = $user1 ? $user1['IDTienda'] : null;
                     <?php
                     echo "<span class='user-text'>" . htmlspecialchars($_SESSION['correo']) . "</span>"; // Aqui para Mostrar IDUsuario
                     ?>
-                    <img src="img/pexels-danxavier-1212984.jpg" alt="User" class="user-image">
+                     <img src="<?php echo htmlspecialchars($fotoBase64); ?>" alt="User" class="user-image">
 
                 </a>
             </div>
@@ -109,6 +90,8 @@ $idtienda = $user1 ? $user1['IDTienda'] : null;
                     <option value="Empaquetado">Empaquetado</option>
                 </select>
             </div>
+            <button id="reporte-btn" class="btn btn-primary mt-3">Generar Reporte de Inventario</button>
+            <button id="reporte_venta_btn" class="btn btn-primary mt-3">Generar Reporte de ventas</button>
         </header>
 
         <table class="productos-tabla">
@@ -133,6 +116,7 @@ $idtienda = $user1 ? $user1['IDTienda'] : null;
 
     <script src="js/script.js">
     </script>
+    <script src="js/reporteInv.js" ></script>
     <script src="ajax/obtenerProductos.js">
     </script>
 

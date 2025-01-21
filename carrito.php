@@ -1,33 +1,14 @@
 <?php
-session_start();
 
-if (!isset($_SESSION['correo']) || $_SESSION['rol_id']  != 2) {
-    header('Location: ./inicioSesion.php');
-    exit();
-}
-require_once './php/ConexionBD.php';
-$connection = new ConexionDB();
-$pdo = $connection->connect();
+require_once './php/Usuario.php';
 
-$sql = 'SELECT IDUsuario FROM usuario WHERE Correo = :correo';
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':correo', $_SESSION['correo'], PDO::PARAM_STR);
-$stmt->execute();
+$usuario = new Usuario();
+$usuario->verificarSesion($_SESSION['correo'], 2);
 
-// Obtener el IDUsuario
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
-$idUsuario = $user ? $user['IDUsuario'] : null;
-
-
-$sqltienda = 'SELECT IDTienda FROM usuario WHERE Correo = :correo';
-$stmtienda = $pdo->prepare($sqltienda);
-$stmtienda->bindParam(':correo', $_SESSION['correo'], PDO::PARAM_STR);
-$stmtienda->execute();
-
-//Obtener tienda 
-$user1 = $stmtienda->fetch(PDO::FETCH_ASSOC);
-$idtienda = $user1 ? $user1['IDTienda'] : null;
-
+$datosUsuario = $usuario->obtenerDatosPorCorreo($_SESSION['correo']);
+$idUsuario = $datosUsuario['IDUsuario'] ?? null;
+$idTienda = $datosUsuario['IDTienda'] ?? null;
+$fotoBase64 = $usuario->obtenerFotoBase64($datosUsuario['Foto'] ?? null);
 ?>
 
 
@@ -43,6 +24,7 @@ $idtienda = $user1 ? $user1['IDTienda'] : null;
     <link rel="stylesheet" href="css/sidebar.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/navbar.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="bg-light">
@@ -58,7 +40,7 @@ $idtienda = $user1 ? $user1['IDTienda'] : null;
                     <?php
                     echo "<span class='user-text'>" . htmlspecialchars($_SESSION['correo']) . "</span>"; // Aqui para Mostrar IDUsuario
                     ?>
-                    <img src="img/pexels-danxavier-1212984.jpg" alt="User" class="user-image">
+                    <img src="<?php echo htmlspecialchars($fotoBase64); ?>" alt="User" class="user-image">
 
                 </a>
             </div>
@@ -152,7 +134,7 @@ $idtienda = $user1 ? $user1['IDTienda'] : null;
 
                                 <!-- Campos ocultos para enviar datos de la compra -->
                                 <input type="hidden" id="idUsuario" name="idUsuario" value="<?php echo $idUsuario; ?>"> 
-                                <input type="hidden" id="idTienda" name="idTienda" value="<?php echo $idtienda; ?>"> 
+                                <input type="hidden" id="idTienda" name="idTienda" value="<?php echo $datosUsuario['IDTienda']; ?>"> 
                                 <input type="hidden" id="subtotal" name="total" value="">
                                 <input type="hidden" id="total" name="total" value="">
                                 <input type="hidden" name="productos" id="productosInput"> <!-- Será llenado con JS -->

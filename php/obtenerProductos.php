@@ -3,12 +3,6 @@ session_start();
 require_once './ConexionBD.php';
 header('Content-Type: application/json');
 
-// Verificar si el usuario está autenticado y es un vendedor
-if (!isset($_SESSION['correo']) || $_SESSION['rol_id'] != 2) {
-    echo json_encode(['success' => false, 'message' => 'No autorizado']);
-    exit();
-}
-
 $connection = new ConexionDB();
 $pdo = $connection->connect();
 

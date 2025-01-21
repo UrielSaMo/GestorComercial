@@ -3,18 +3,21 @@ body {
     min-height: 100vh;
     margin: 0;
 }
-
 .sidebar {
-    position: relative; /* Cambiar de fixed a relative para trabajar con flexbox */
-    width: 50px; /* Ancho inicial del sidebar */
+    position: fixed; /* Fijar el sidebar */
+    top: 0;
+    left: 0;
+    width: 50px; /* Ancho inicial */
+    height: 100vh; /* Altura completa */
     background-color: #ffffff;
-    height: 100vh;
     box-shadow: 5px 0 30px rgba(0, 0, 0, .1);
-    transition: width .5s ease; /* Transición suave al expandirse */
+    z-index: 1001; /* Mayor que el navbar */
+    transition: width 0.5s ease;
 }
 
+
 .sidebar.active {
-    width: 240px; /* Ancho del sidebar expandido */
+    width: 270px; /* Ancho del sidebar expandido */
 }
 
 .sidebar .logo_content .logo {

@@ -1,20 +1,21 @@
-document.querySelector('#registroForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Evita el envío del formulario estándar
+document.getElementById('registroForm').addEventListener('submit', function (event) {
+    event.preventDefault();
 
     const formData = new FormData(this);
 
-    fetch('/ServicioSocial/GestorComercial/php/register.php', {
+    fetch('/ServicioSocial/GestorComercial/php/Auth.php', {
         method: 'POST',
-        body: formData,
+        body: formData
     })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 Swal.fire({
                     icon: 'success',
-                    title: '¡Éxito!',
+                    title: 'Éxito',
                     text: data.message,
-                    confirmButtonText: 'Ir al inicio de sesión',
+                    showConfirmButton: false,
+                    timer: 1500
                 }).then(() => {
                     window.location.href = 'inicioSesion.php';
                 });
@@ -22,15 +23,16 @@ document.querySelector('#registroForm').addEventListener('submit', function (eve
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: data.message,
+                    text: data.message
                 });
             }
         })
-        .catch(() => {
+        .catch(error => {
+            console.error('Error:', error);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'No se pudo completar la solicitud. Inténtalo más tarde.',
+                text: 'Ocurrió un error inesperado.'
             });
         });
 });
