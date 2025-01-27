@@ -1,0 +1,161 @@
+h2 {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.formulario-container {
+    width: 60%;
+    margin: 20px auto; /* Centrado en la página */
+    padding: 30px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    font-family: 'Poppins', sans-serif;
+}
+
+.productos-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+input {
+    border: none;
+    outline: none; /* Esto también elimina el contorno al hacer foco en el input */
+}
+
+.productos-tabla th {
+    background-color: #4a90e2;
+    color: #fff;
+    padding: 10px;
+}
+
+.productos-tabla th:nth-child(6) {
+    width: 10%; /* Espacio para la columna "Eliminar" */
+    background-color: #fff; /* Color blanco */
+    color: transparent; /* Sin texto visible */
+}
+
+.productos-tabla td {
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.productos-tabla tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.productos-tabla tr:nth-child(even) input {
+    background-color: #f9f9f9;
+    color: black;
+}
+
+.formulario-container form div {
+    margin-bottom: 15px;
+}
+
+.formulario-container label {
+    display: block;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.formulario-container input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.formulario-container .buttons {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.formulario-container .limpiar-btn,
+.formulario-container .agregar-btn {
+    background-color: #6278c8;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.formulario-container .limpiar-btn:hover,
+.formulario-container .agregar-btn:hover {
+    background-color: #405099;
+}
+
+.productos-tabla .eliminar-btn {
+    background-color: red; /* Color de fondo rojo */
+    color: white; /* Color del texto blanco */
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.productos-tabla .eliminar-btn:hover {
+    background-color: darkred; /* Color más oscuro al pasar el mouse */
+}
+
+
+
+@media (max-width: 450px) {
+
+    .formulario-container {
+        background-color: #e7efff; 
+        border-radius: 10px;
+        width: 300px;
+        margin: 60px; /* Centrado en la página */
+        padding: 30px;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    .formulario-container form div {
+        margin-bottom: 15px;
+    }
+    
+    .formulario-container label {
+        display: block;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 5px;
+    }
+    
+    .formulario-container {
+        width: 55%; /* Ajusta el ancho para pantallas pequeñas */
+    }
+
+    .formulario-container input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+    
+    .formulario-container .buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+
+
+    .formulario-container .buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .formulario-container .limpiar-btn,
+    .formulario-container .agregar-btn {
+        width: 100%;
+    }
+}

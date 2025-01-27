@@ -1,0 +1,85 @@
+.reporte-container p:first-of-type {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.4em; 
+    margin-bottom: 10px; 
+}
+
+.reporte-container p:nth-of-type(2),
+.reporte-container p:nth-of-type(3) {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.reporte-container {
+    width: 60%;
+    margin: 20px auto; /* Centrado en la página */
+    padding: 30px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Estilos para la tabla de productos exitosos */
+.tabla-exitosos {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    background: linear-gradient(to right, white 1%, #15ff00); /* De blanco a un verde suave */
+}
+
+.tabla-exitosos th, .tabla-exitosos td {
+    border: 1px solid #ddd;
+    padding: 7px;
+    text-align: left;
+}
+
+/* Estilos para la tabla de productos fallidos */
+.tabla-fallidos {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    background: linear-gradient(to right, white 1%, #ff0000); /* De blanco a un rojo suave */
+}
+
+.tabla-fallidos th, .tabla-fallidos td {
+    border: 1px solid #ddd;
+    padding: 7px;
+    text-align: left;
+}
+
+/* Ancho de las columnas */
+th:nth-child(1), td:nth-child(1) {
+    width: 30%;
+}
+
+th:nth-child(2), td:nth-child(2) {
+    width: 70%;
+}
+
+/* Estilos generales para las tablas */
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.7); /* Fondo blanco con transparencia para filas pares */
+}
+
+tr:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.4); /* Fondo blanco con transparencia para filas impares */
+}
+
+.reporte-container .agregar-btn {
+    background-color: #6278c8;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    justify-content: center;
+}
+
+

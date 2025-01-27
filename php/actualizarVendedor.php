@@ -1,11 +1,12 @@
 <?php
 require_once './ConexionBD.php';
+include './claseVendedor.php';
+
 session_start();
 header('Content-Type: application/json; charset=utf-8');
 
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
         if (empty($_POST['estado'])) {
             echo json_encode(['success' => false, 'message' => 'Debe seleccionar un estado']);
             exit;
@@ -23,90 +24,45 @@ try {
         $passwordHash = password_hash($password, PASSWORD_BCRYPT);
         $userId = isset($_POST['user_id']) ? trim($_POST['user_id']) : null;
 
-        if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+        if (!$correo) {
             echo json_encode(['success' => false, 'message' => 'Correo electrónico no válido.']);
             exit;
         }
 
-        $fotoContenido = null;
+        // Crear una instancia de Vendedor
+        $vendedor = new Vendedor($nombre, $apellidos, $correo, $password, null);
 
-        if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-            $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-            $fileType = mime_content_type($_FILES['foto']['tmp_name']);
-            if (!in_array($fileType, $allowedTypes)) {
-                echo json_encode(['success' => false, 'message' => 'Solo se permiten imágenes en formato JPG, JPEG y PNG.']);
-                exit;
-            }
-
-            $fotoTmpName = $_FILES['foto']['tmp_name'];
-            $fotoContenido = file_get_contents($fotoTmpName);
-        }
+        // Procesar la imagen si se ha subido
+        $fotoContenido = $vendedor->procesarImagen();
 
         $connection = new ConexionDB();
         $pdo = $connection->connect();
 
         // Obtener el correo actual del usuario
-        $sqlCurrentEmail = "SELECT Correo FROM usuario WHERE IDUsuario = :userId";
-        $stmtCurrentEmail = $pdo->prepare($sqlCurrentEmail);
-        $stmtCurrentEmail->bindParam(':userId', $userId);
-        $stmtCurrentEmail->execute();
-        $currentEmail = $stmtCurrentEmail->fetchColumn();
+        $currentEmail = $vendedor->obtenerCorreoActual($pdo, $userId);
 
         // Verificar si el nuevo correo es diferente al actual
-        $updateCorreo = ($correo !== $currentEmail);
-
-        // Si el correo es diferente, verificar si ya existe en la base de datos
-        if ($updateCorreo) {
-            $sqlCheckEmail = "SELECT COUNT(*) FROM usuario WHERE Correo = :correo AND IDUsuario != :userId";
-            $stmtCheckEmail = $pdo->prepare($sqlCheckEmail);
-            $stmtCheckEmail->bindParam(':correo', $correo);
-            $stmtCheckEmail->bindParam(':userId', $userId);
-            $stmtCheckEmail->execute();
-            $emailExists = $stmtCheckEmail->fetchColumn();
-
-            if ($emailExists > 0) {
-                echo json_encode(['success' => false, 'message' => 'El correo electrónico ya está registrado por otro usuario.']);
-                exit;
-            }
+        if ($vendedor->verificarCorreoExistente($pdo, $correo, $userId)) {
+            echo json_encode(['success' => false, 'message' => 'El correo electrónico ya está registrado por otro usuario.']);
+            exit;
         }
 
-        // Iniciar la consulta base
-        $sqlActualizar = "UPDATE usuario SET Nombre = :nombre, Apellido = :apellidos";
-
-        // Agregar campos solo si es necesario
-        if ($updateCorreo) {
-            $sqlActualizar .= ", Correo = :correo";
-        }
-        if (!empty($passwordHash)) {
-            $sqlActualizar .= ", Contraseña = :passwordHash";
-        }
-        if (!empty($fotoContenido)) {  
-            $sqlActualizar .= ", Foto = :fotoContenido";
+        $fotoContenido = null;
+        if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+            $fotoContenido = $vendedor->procesarImagen();
         }
 
-        // Completar la consulta con la cláusula WHERE
-        $sqlActualizar .= " WHERE IDUsuario = :userId";
-
-        $stmtActualizar = $pdo->prepare($sqlActualizar);
-        $stmtActualizar->bindParam(':nombre', $nombre);
-        $stmtActualizar->bindParam(':apellidos', $apellidos);
-        $stmtActualizar->bindParam(':userId', $userId);
-
-        // Solo vincular el correo si se va a actualizar
-        if ($updateCorreo) {
-            $stmtActualizar->bindParam(':correo', $correo);
-        }
-        if (!empty($passwordHash)) {
-            $stmtActualizar->bindParam(':passwordHash', $passwordHash);
-        }
-        if (!empty($fotoContenido)) {
-            $stmtActualizar->bindParam(':fotoContenido', $fotoContenido, PDO::PARAM_LOB);
+        // Generar el hash de la contraseña solo si se envió una nueva
+        $passwordHash = null;
+        if (!empty($password)) {
+            $passwordHash = password_hash($password, PASSWORD_BCRYPT);
         }
 
-        if ($stmtActualizar->execute()) {
+        // Actualizar los datos del vendedor
+        if ($vendedor->actualizarVendedor($pdo, $passwordHash, $fotoContenido, $userId, $estado)) {
             echo json_encode([
                 'success' => true,
-                'message' => 'Vendedor actualizado existosamente.',
+                'message' => 'Vendedor actualizado exitosamente.',
                 'redirectUrl' => '../GestorComercial/trabajador.php'
             ]);
         } else {
@@ -117,4 +73,5 @@ try {
     echo json_encode(['success' => false, 'message' => 'Error en la base de datos: ' . $e->getMessage()]);
 }
 exit;
+
 ?>

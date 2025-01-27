@@ -1,45 +1,29 @@
 <?php
-session_start();
-if (!isset($_SESSION['correo'])) {
-    header('Location: ./inicioSesion.php');
-    exit();
-}
-if ($_SESSION['role_id'] !== 1) {
-    echo "<script>
-     alert('Acceso Denegado. Solo administradores pueden acceder');";
-    exit();
-}
+require_once './php/Usuario.php';
+$usuario = new Usuario();
+$usuario->verificarSesion($_SESSION['correo'],1 );
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/sidebar2.css">
+    <link rel="stylesheet" href="css/navbar2.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/vendedores y Producto.css">
-    
-   
     <title>Agregar Vendedor</title>
 </head>
 <body>
 
-    <nav style="background-color: #e7e7fb;" class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="icon/icons8-shop-32.png" alt="Logo" class="rounded me-2" ><span style="color: black;">
-                    GestorComercial
-                </span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse">
-               
-            </div>
+    <nav class="custom-navbar">
+        <div class="navbar-container">
+            <span class="navbar-text mx-auto fw-bold fs-4">
+                <img src="icon/icons8-shop-32.png" alt="User" class="user-image">
+                <a href="estadoInventario.php" class="text-decoration-none text-dark">GestorComercial</a>
+            </span>
         </div>
     </nav>
-
     <div class="sidebar">
         <div class="logo_content">
             <div class="menu_btn">
@@ -51,13 +35,13 @@ if ($_SESSION['role_id'] !== 1) {
             </div>
             <ul class="nav_list">
                 <li>
-                    <a href="trabajador.html">
+                    <a href="trabajador.php">
                         <img src="icon/icons8-person-24.png" alt="icono_persona">
                         <span class="links_name">Vendedores</span>
                     </a>
                 </li>
                 <li>
-                    <a href="listaProductos.html">
+                    <a href="estadoInventario.php">
                         <img src="icon/icons8-product-24.png" alt="icono_producto"> <!-- Ícono de usuario -->
                         <span class="links_name">Productos</span>
                     </a>
@@ -105,7 +89,7 @@ if ($_SESSION['role_id'] !== 1) {
         </div>
     </div>
     
-    <script src="ajax/agregarVendedor.js"></script>
+    <script src="ajax/peticionModal.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/script.js"></script>
     

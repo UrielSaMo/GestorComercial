@@ -3,7 +3,7 @@ document.querySelector('#agregarVendedor').addEventListener('submit', function (
 
     const formData = new FormData(this);
 
-    fetch('/ServicioSocial/GestorComercial/php/agregarVendedor.php', {
+    fetch('php/agregarVendedor.php', {
         method: 'POST',
         body: formData,
     })

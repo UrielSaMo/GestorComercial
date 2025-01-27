@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +8,17 @@
     <link rel="stylesheet" href="css/inicioSesion.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
     <div class="container">
         <h1 class="title">GESTORCOMERCIAL</h1>
         <div class="login-box">
             <img src="icon/icons8-shop-32.png" alt="Tienda" class="icon">
-            <form action="./php/InicioSesion.php" method="post" id="loginForm">
+            <form id="loginForm">
                 <div class="input-group">
-                    <label for="email">Correo Electrónico</label>
-                    <input type="email" name="correo" id="email" placeholder="Email" required>
+                    <label for="correo">Correo</label>
+                    <input type="email" name="correo" id="correo" placeholder="Correo" required>
                 </div>
                 <div class="input-group">
                     <label for="password">Contraseña</label>
@@ -30,6 +32,7 @@
                         <option value="1">Administrador</option>
                     </select>
                 </div>
+                <input type="hidden" name="action" value="login">
                 <input type="submit" class="btn" value="Ingresar">
             </form>
         </div>
@@ -38,4 +41,5 @@
     <script src="ajax/inicio.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
+
 </html>

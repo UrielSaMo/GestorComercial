@@ -1,37 +1,62 @@
-document.querySelector('#loginForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Evita el envío tradicional del formulario
+document.getElementById('loginForm').addEventListener('submit', function (event) {
+    event.preventDefault();
 
     const formData = new FormData(this);
 
-    fetch('/ServicioSocial/GestorComercial/php/InicioSesion.php', {
+    // Log the form data to verify it is being captured correctly
+    for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+    }
+
+    fetch('php/Auth.php', {
         method: 'POST',
-        body: formData,
+        body: formData
     })
-        .then(response => response.json())
-        .then(data => {
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text(); // Cambiar a text() para verificar el contenido
+    })
+    .then(text => {
+        console.log('Server response:', text); // Agregar un log para ver la respuesta del servidor
+        try {
+            if (text.trim() === "") {
+                throw new Error('Empty response from server');
+            }
+            const data = JSON.parse(text); // Intentar parsear el texto como JSON
             if (data.success) {
                 Swal.fire({
                     icon: 'success',
-                    title: '¡Éxito!',
+                    title: 'Éxito',
                     text: data.message,
-                    confirmButtonText: 'Continuar',
+                    showConfirmButton: false,
+                    timer: 1500
                 }).then(() => {
-                    window.location.href = data.redirectUrl; // Redirige a la URL correspondiente
+                    window.location.href = data.redirectUrl;
                 });
             } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: data.message,
+                    text: data.message
                 });
             }
-        })
-        .catch(error => {
-            console.error('Error en el fetch:', error);
+        } catch (error) {
+            console.error('Error parsing JSON:', error);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'No se pudo completar la solicitud. Inténtalo más tarde.',
+                text: 'La respuesta del servidor no es un JSON válido.'
             });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Ocurrió un error inesperado.'
         });
+    });
 });

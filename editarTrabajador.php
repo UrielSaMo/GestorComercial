@@ -1,16 +1,8 @@
 <?php
-session_start();
-if (!isset($_SESSION['correo'])) {
-    header('Location: ./inicioSesion.php');
-    exit();
-}
-if ($_SESSION['role_id'] !== 1) {
-    echo "<script>
-     alert('Acceso Denegado. Solo administradores pueden acceder');";
-    exit();
-}
-
 require_once 'php/ConexionBD.php';
+require_once './php/Usuario.php';
+$usuario = new Usuario();
+$usuario->verificarSesion($_SESSION['correo'],1 );
 
 $connection = new ConexionDB();
 $pdo = $connection->connect();
@@ -33,20 +25,19 @@ $fotoSrc = is_null($user['Foto']) ? 'icon/perfil.png' : 'data:image/jpeg;base64,
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Trabajador</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/sidebar2.css">
+    <link rel="stylesheet" href="css/navbar2.css">
 </head>
 <body class="bg-light">
 
-    <!-- Navbar -->
-    <nav style="background-color: #e7e7fb;" class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="icon/icons8-shop-32.png" alt="Logo" class="rounded me-2" >
-                <span style="color: black;">GestorComercial</span>
-            </a>
+    <nav class="custom-navbar">
+        <div class="navbar-container">
+            <span class="navbar-text mx-auto fw-bold fs-4">
+                <img src="icon/icons8-shop-32.png" alt="User" class="user-image">
+                <a href="estadoInventario.php" class="text-decoration-none text-dark">GestorComercial</a>
+            </span>
         </div>
     </nav>
 
@@ -67,7 +58,7 @@ $fotoSrc = is_null($user['Foto']) ? 'icon/perfil.png' : 'data:image/jpeg;base64,
                     </a>
                 </li>
                 <li>
-                    <a href="listaProductos.html">
+                    <a href="listaProductos.php">
                         <img src="icon/icons8-product-24.png" alt="icono_producto"> <!-- Ícono de usuario -->
                         <span class="links_name">Productos</span>
                     </a>
@@ -134,7 +125,7 @@ $fotoSrc = is_null($user['Foto']) ? 'icon/perfil.png' : 'data:image/jpeg;base64,
 
     <script src="js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="ajax/actualizarVendedor.js"></script>
+    <script src="ajax/peticionModal.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
