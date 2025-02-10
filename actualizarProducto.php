@@ -102,8 +102,10 @@ $estado = isset($_GET['estado']) ? htmlspecialchars($_GET['estado']) : '';
             </ul>
         </div>
     </div>
+
+    
     <!-- Formulario -->
-    <div class="d-flex flex-column align-items-center justify-content-center vh-100">
+    <div class="d-flex flex-column align-items-center container justify-content-center vh-100">
         <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
             <h2 class="text-center">Actualizar Producto</h2>
             <form action="php/procesarActualizacion.php" method="POST">
